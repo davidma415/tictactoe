@@ -3,12 +3,9 @@ document.addEventListener("DOMContentLoaded", function(){
   var currentTurn = 1;
   var newGame = document.querySelector('.newGame');
   var title = document.querySelector('.title');
-  var winCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
+  var winCombos = [[2, 4, 6], [0, 4, 8], [2, 5, 8], [1, 4, 7], [0, 3, 6], [6, 7, 8], [3, 4, 5], [0, 1, 2]]
 
-
-  tiles.forEach(function(tile) {
-    tile.addEventListener('click', addTurn);
-  })
+  tileListeners();
 
   newGame.addEventListener('click', resetGame)
 
@@ -17,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function(){
       tile.innerHTML = '';
       tile.style.backgroundColor = '#7F8C93';
       tile.style.color = 'white';
+      tileListeners();
     })
     currentTurn = 1;
     newGame.style.display = 'none';
@@ -29,15 +27,29 @@ document.addEventListener("DOMContentLoaded", function(){
         this.style.color = '#5BADFF';
         this.innerHTML = 'X';
         newGame.style.display = 'inline-block'
+        this.removeEventListener('click', addTurn)
       } else {
         this.style.color = '#A1D7F4';
         this.innerHTML = 'O';
+        this.removeEventListener('click', addTurn)
       }
     }
     checkWin();
     currentTurn ++;
   }
-  // 012, 345, 678, 036, 147, 258, 048, 246
+
+  function tileListeners() {
+    tiles.forEach(function(tile) {
+      tile.addEventListener('click', addTurn);
+    })
+  }
+
+  function removeTileListeners() {
+    tiles.forEach(function(tile) {
+      tile.removeEventListener('click', addTurn);
+    })
+  }
+
   function checkWin() {
     winCombos.forEach(function(combo){
       var tile1 = tiles[combo[0]].innerHTML;
@@ -55,6 +67,7 @@ document.addEventListener("DOMContentLoaded", function(){
         }
       }
     })
+
     function winningCases() {
       var currentPlayer = checkTurn();
       var winMsg = currentPlayer + ' is the winner!';
@@ -65,6 +78,7 @@ document.addEventListener("DOMContentLoaded", function(){
           tile.style.backgroundColor = '#77000f';
         }
       })
+      removeTileListeners();
     }
   }
 
