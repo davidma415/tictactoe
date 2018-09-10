@@ -51,22 +51,32 @@ document.addEventListener("DOMContentLoaded", function(){
   }
 
   function checkWin() {
-    winCombos.forEach(function(combo){
-      var tile1 = tiles[combo[0]].innerHTML;
-      var tile2 = tiles[combo[1]].innerHTML;
-      var tile3 = tiles[combo[2]].innerHTML;
-      if (currentTurn < 9) {
-        if (tile1 === tile2 && tile2 === tile3 && tile3 != '') {
-          winningCases();
-        }
-      } else if (currentTurn == 9) {
-        if (tile1 === tile2 && tile2 === tile3 && tile3 != '') {
-          winningCases();
-        } else if (tile1 !== tile2 && tile2 !== tile3 && tile3 != '') {
+    for (var i = 0; i < winCombos.length; i++) {
+      var tile1 = tiles[winCombos[i][0]].innerHTML;
+      var tile2 = tiles[winCombos[i][1]].innerHTML;
+      var tile3 = tiles[winCombos[i][2]].innerHTML;
+      if (tile1 === tile2 && tile2 === tile3 && tile3 != '') {
+        winningCases();
+        return;
+      } else {
+        if (currentTurn === 9 && tile1 !== tile2 && tile2 !== tile3 && tile3 != '') {
           title.innerHTML = 'The game is a draw!';
         }
       }
-    })
+    }
+    // winCombos.forEach(function(combo) {
+    //   var tile1 = tiles[combo[0]].innerHTML;
+    //   var tile2 = tiles[combo[1]].innerHTML;
+    //   var tile3 = tiles[combo[2]].innerHTML;
+    //   if (tile1 === tile2 && tile2 === tile3 && tile3 != '') {
+    //     winningCases();
+    //     return;
+    //   } else {
+    //     if (currentTurn === 9 && tile1 !== tile2 && tile2 !== tile3 && tile3 != '') {
+    //       title.innerHTML = 'The game is a draw!';
+    //     }
+    //   }
+    // })
 
     function winningCases() {
       var currentPlayer = checkTurn();
